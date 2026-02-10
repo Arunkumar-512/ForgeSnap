@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import "tailwindcss";
+
+/* Theme tokens */
+@theme {
+    --font-poppins: "Poppins", sans-serif;
+
+    /* Brand Colors */
+    --color-brand-primary: #6366f1;   /* Indigo */
+    --color-brand-secondary: #8b5cf6; /* Violet */
+    --color-brand-accent: #06b6d4;    /* Cyan */
+}
+
+/* Base body styling */
+body {
+    @apply bg-neutral-950 text-neutral-200 text-sm antialiased font-poppins;
+}
+
+/* Text selection branding */
+body::selection {
+    @apply bg-indigo-500 text-white;
+}
+
+/* Buttons */
+button {
+    @apply cursor-pointer transition-all duration-200;
+}
+
+/* Gradient branding utility */
+.move-gradient {
+    background-image: linear-gradient(
+        to right,
+        var(--color-brand-primary),
+        var(--color-brand-secondary),
+        var(--color-brand-accent)
+    );
+    background-size: 200% 100%;
+    animation: movegradient 6s linear infinite;
+}
+
+/* Gradient animation */
+@keyframes movegradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
