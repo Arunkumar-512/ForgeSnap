@@ -44,7 +44,7 @@ export default function TestimonialCard({
                 height="14"
                 viewBox="0 0 12 12"
                 fill="none"
-              >
+              > 
                 <path
                   fillRule="evenodd"
                   clipRule="evenodd"

@@ -185,6 +185,29 @@ export default function Navbar() {
                     </Link>
                   </motion.div>
                 ))}
+                {isLoggedIn ? (
+            <Link
+              to="/my-generation"
+              className="flex items-center justify-between 
+                px-5 py-4 rounded-2xl 
+                bg-white/5 border border-white/10
+                text-white/90 hover:bg-white/10 
+                active:scale-[0.98] transition-all"
+            >
+              My Generations
+            </Link>
+          ) : (
+            <Link
+              to="/about"
+              className="flex items-center justify-between 
+                px-5 py-4 rounded-2xl 
+                bg-white/5 border border-white/10
+                text-white/90 hover:bg-white/10 
+                active:scale-[0.98] transition-all"
+            >
+              About
+            </Link>
+          )}
 
                 {/* AUTH */}
                 <motion.div
