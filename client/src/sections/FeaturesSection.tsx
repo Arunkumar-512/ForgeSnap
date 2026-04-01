@@ -7,39 +7,47 @@ import type { IFeature } from "../types";
 
 export default function FeaturesSection() {
   return (
-    <div id="features" className="px-4 md:px-16 lg:px-24 xl:px-32">
+    <div
+      id="features"
+      className="relative px-6 md:px-16 lg:px-24 xl:px-32 mt-32 overflow-hidden"
+    >
+      {/* BACKGROUND GLOW (MATCH HERO) */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(0,255,200,0.06),transparent_40%),radial-gradient(circle_at_80%_80%,rgba(120,119,198,0.08),transparent_40%)]"></div>
+
       <SectionTitle
         text1="Features"
         text2="Why use our generator?"
         text3="Create stunning thumbnails that get clicks, without the hassle."
       />
 
-      <div className="flex flex-wrap items-center justify-center gap-6 md:gap-4 mt-16 px-6">
+      {/* FEATURE CARDS */}
+      <div className="flex flex-wrap items-center justify-center gap-6 mt-16">
         {featuresData.map((feature: IFeature, index: number) => (
           <motion.div
             key={index}
-            className={`${
-              index === 1
-                ? "p-px rounded-[13px] bg-linear-to-br from-indigo-600 via-violet-600 to-cyan-600"
-                : ""
-            }`}
-            initial={{ y: 150, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
+            initial={{ opacity: 0, y: 80, scale: 0.9 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            whileHover={{ scale: 1.05, y: -6 }}
             viewport={{ once: true }}
             transition={{
               delay: index * 0.15,
               type: "spring",
-              stiffness: 320,
-              damping: 70,
-              mass: 1,
+              stiffness: 200,
             }}
+            className="group relative p-[1px] rounded-xl bg-gradient-to-br from-emerald-400/20 via-cyan-400/20 to-teal-300/20"
           >
-            <div className="p-6 rounded-xl space-y-4 border border-white/10 bg-slate-950 max-w-80 w-full">
-              <img src={feature.icon} alt={feature.title} />
-              <h3 className="text-base font-medium text-white">
+            <div className="p-6 rounded-xl space-y-4 border border-white/10 bg-white/5 backdrop-blur-xl max-w-80 w-full group-hover:bg-white/10 transition duration-300">
+              <img
+                src={feature.icon}
+                alt={feature.title}
+                className="w-10 h-10 group-hover:scale-110 transition duration-300"
+              />
+
+              <h3 className="text-base font-semibold text-white group-hover:text-emerald-300 transition">
                 {feature.title}
               </h3>
-              <p className="text-slate-400 line-clamp-2 pb-4">
+
+              <p className="text-gray-400 line-clamp-2">
                 {feature.description}
               </p>
             </div>
@@ -47,79 +55,69 @@ export default function FeaturesSection() {
         ))}
       </div>
 
-      <div className="mt-40 relative mx-auto max-w-5xl">
-        <div className="absolute -z-50 size-100 -top-10 -left-20 aspect-square rounded-full bg-indigo-500/30 blur-3xl"></div>
+      {/* SHOWCASE */}
+      <div className="mt-40 relative mx-auto max-w-6xl">
+        <div className="absolute -z-10 w-[400px] h-[400px] top-0 left-0 bg-emerald-400/10 blur-[120px] rounded-full"></div>
 
         <motion.p
-          className="text-slate-300 text-lg text-left max-w-3xl"
-          initial={{ y: 150, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
+          className="text-gray-300 text-lg max-w-3xl"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ type: "spring", stiffness: 320, damping: 70, mass: 1 }}
         >
           ForgeSnap simplifies thumbnail creation so you can focus on growing
-          your videos and views
+          your videos and views.
         </motion.p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 mt-8 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 mt-10 gap-10 items-center">
+          {/* BIG IMAGE */}
           <motion.div
             className="md:col-span-2"
-            initial={{ y: 150, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
+            initial={{ opacity: 0, x: -80 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            whileHover={{ scale: 1.02 }}
             viewport={{ once: true }}
-            transition={{
-              type: "spring",
-              stiffness: 240,
-              damping: 70,
-              mass: 1,
-            }}
+            transition={{ duration: 0.6 }}
           >
             <img
-              className="h-full w-auto rounded-xl"
+              className="rounded-xl shadow-xl"
               src="/assets/img3.jpeg"
               alt="features showcase"
-              width={1000}
-              height={500}
             />
           </motion.div>
 
+          {/* SIDE CONTENT */}
           <motion.div
-            className="md:col-span-1"
-            initial={{ y: 150, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
+            initial={{ opacity: 0, x: 80 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{
-              delay: 0.15,
-              type: "spring",
-              stiffness: 320,
-              damping: 70,
-              mass: 1,
-            }}
+            transition={{ delay: 0.2 }}
           >
-            <img
+            <motion.img
               src="/assets/img2.jpg"
               alt="features showcase"
-              width={1000}
-              height={500}
-              className="hover:-translate-y-0.5 transition duration-300 rounded-xl"
+              className="rounded-xl mb-6 shadow-lg"
+              whileHover={{ scale: 1.05, rotate: 1 }}
+              transition={{ type: "spring", stiffness: 200 }}
             />
 
-            <h3 className="text-[24px]/7.5 text-slate-200 font-medium mt-6">
+            <h3 className="text-2xl text-white font-semibold">
               Boost Your Views with ForgeSnap AI
             </h3>
 
-            <p className="text-slate-400 mt-2">
+            <p className="text-gray-400 mt-3">
               Stop guessing what works — ForgeSnap creates thumbnails designed
               to capture attention and drive clicks.
             </p>
 
-            <a
+            <motion.a
               href="/"
-              className="group flex items-center gap-2 mt-4 text-indigo-400 hover:text-cyan-400 transition"
+              whileHover={{ x: 5 }}
+              className="group flex items-center gap-2 mt-5 text-emerald-400 hover:text-cyan-300 transition"
             >
               Forge Your Thumbnail
-              <ArrowUpRight className="size-5 group-hover:translate-x-0.5 transition duration-300" />
-            </a>
+              <ArrowUpRight className="size-5 group-hover:translate-x-1 transition" />
+            </motion.a>
           </motion.div>
         </div>
       </div>

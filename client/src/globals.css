@@ -1,52 +1,171 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
-/* Theme tokens */
+/* =========================
+   🎨 THEME TOKENS
+========================= */
 @theme {
-    --font-poppins: "Poppins", sans-serif;
+  /* Fonts */
+  --font-primary: "Inter", sans-serif;
+  --font-heading: "Poppins", sans-serif;
 
-    /* Brand Colors */
-    --color-brand-primary: #6366f1;   /* Indigo */
-    --color-brand-secondary: #8b5cf6; /* Violet */
-    --color-brand-accent: #06b6d4;    /* Cyan */
+  /* Brand Colors */
+  --color-brand-primary: #6366f1;
+  --color-brand-secondary: #8b5cf6;
+  --color-brand-accent: #06b6d4;
+
+  /* Neutral System */
+  --color-bg: #030712;
+  --color-surface: rgba(255, 255, 255, 0.04);
+  --color-border: rgba(255, 255, 255, 0.08);
+
+  /* Radius */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
 }
 
-/* Base body styling */
+/* =========================
+   🌍 BASE STYLES
+========================= */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-    @apply bg-neutral-950 text-neutral-200 text-sm antialiased font-poppins;
+  @apply bg-neutral-950 text-neutral-200 antialiased;
+  font-family: var(--font-primary);
+  font-feature-settings: "rlig" 1, "calt" 1;
 }
 
-/* Text selection branding */
-body::selection {
-    @apply bg-indigo-500 text-white;
+/* Headings (🔥 PRO TOUCH) */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
 }
 
-/* Buttons */
+/* Better rendering */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================
+   ✨ SELECTION
+========================= */
+::selection {
+  @apply bg-indigo-500 text-white;
+}
+
+/* =========================
+   🔘 BUTTON BASE
+========================= */
 button {
-    @apply cursor-pointer transition-all duration-200;
+  @apply cursor-pointer transition-all duration-200 ease-out;
+  font-family: var(--font-primary);
 }
 
-/* Gradient branding utility */
+/* =========================
+   🧠 INPUT BASE
+========================= */
+input,
+textarea {
+  @apply outline-none;
+  font-family: var(--font-primary);
+}
+
+/* =========================
+   🔲 SCROLLBAR
+========================= */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* =========================
+   💎 GLASS
+========================= */
+.glass {
+  background: var(--color-surface);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border);
+}
+
+/* =========================
+   🌈 GRADIENTS
+========================= */
+.gradient-text {
+  background: linear-gradient(
+    to right,
+    var(--color-brand-primary),
+    var(--color-brand-secondary),
+    var(--color-brand-accent)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-bg {
+  background: linear-gradient(
+    to right,
+    var(--color-brand-primary),
+    var(--color-brand-secondary),
+    var(--color-brand-accent)
+  );
+}
+
 .move-gradient {
-    background-image: linear-gradient(
-        to right,
-        var(--color-brand-primary),
-        var(--color-brand-secondary),
-        var(--color-brand-accent)
-    );
-    background-size: 200% 100%;
-    animation: movegradient 6s linear infinite;
+  background-image: linear-gradient(
+    to right,
+    var(--color-brand-primary),
+    var(--color-brand-secondary),
+    var(--color-brand-accent)
+  );
+  background-size: 200% 100%;
+  animation: movegradient 6s linear infinite;
 }
 
-/* Gradient animation */
 @keyframes movegradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* =========================
+   ⚡ FOCUS STATES
+========================= */
+.focus-ring {
+  @apply focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500;
+}
+
+/* =========================
+   🎬 ANIMATIONS
+========================= */
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   🧱 CONTAINER
+========================= */
+.container-custom {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 }

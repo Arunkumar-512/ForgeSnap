@@ -11,18 +11,52 @@ export type AspectRatio = (typeof aspectRatios)[number];
 
 export const thumbnailStyles = ["Bold & Graphic", "Minimalist & Clean", "photorealistic", "illustrated", "tech/futuristic"];
 export type ThumbnailStyle = (typeof thumbnailStyles)[number];
-
 export const colorSchemes = [
-    { id: "vibrant", name: "Vibrant", colors: ["#FF6B6B", "#4ECDC4", "#45B7D1"] },
-    { id: "sunset", name: "Sunset", colors: ["#FF8C42", "#FF3C38", "#A23B72"] },
-    { id: "ocean", name: "Ocean", colors: ["#0077B6", "#00B4D8", "#90E0EF"] },
-    { id: "forest", name: "Forest", colors: ["#2D6A4F", "#40916C", "#95D5B2"] },
-    { id: "purple", name: "Purple Dream", colors: ["#7B2CBF", "#9D4EDD", "#C77DFF"] },
-    { id: "monochrome", name: "Monochrome", colors: ["#212529", "#495057", "#ADB5BD"] },
-    { id: "neon", name: "Neon", colors: ["#FF00FF", "#00FFFF", "#FFFF00"] },
-    { id: "pastel", name: "Pastel", colors: ["#FFB5A7", "#FCD5CE", "#F8EDEB"] },
+  {
+    id: "emerald",
+    name: "Emerald Core",
+    colors: ["#10B981", "#34D399", "#6EE7B7"],
+  },
+  {
+    id: "cyan",
+    name: "Cyan Glow",
+    colors: ["#06B6D4", "#22D3EE", "#67E8F9"],
+  },
+  {
+    id: "teal",
+    name: "Teal Flow",
+    colors: ["#0D9488", "#14B8A6", "#5EEAD4"],
+  },
+  {
+    id: "mint",
+    name: "Mint Soft",
+    colors: ["#A7F3D0", "#6EE7B7", "#34D399"],
+  },
+  {
+    id: "aqua",
+    name: "Aqua Light",
+    colors: ["#67E8F9", "#22D3EE", "#0891B2"],
+  },
+  {
+    id: "dark",
+    name: "Dark Pro",
+    colors: ["#020617", "#0F172A", "#1E293B"],
+  },
+  {
+    id: "glass",
+    name: "Glass UI",
+    colors: ["#ffffff20", "#ffffff10", "#ffffff05"],
+  },
+  {
+    id: "night",
+    name: "Night Cyan",
+    colors: ["#0E7490", "#164E63", "#020617"],
+  },
 ] as const;
+
+// ✅ TYPE (auto updates if you change schemes)
 export type ColorScheme = (typeof colorSchemes)[number];
+export type ColorSchemeId = ColorScheme["id"];
 
 export interface ThumbnailRequest {
     title: string;

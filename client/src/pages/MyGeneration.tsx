@@ -1,11 +1,18 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { type IThumbnail } from "../assets/assets";
 import SoftBackDrop from "../components/SoftBackDrop";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowUpRightIcon, DownloadIcon, TrashIcon } from "lucide-react";
+import {
+  ArrowUpRightIcon,
+  DownloadIcon,
+  TrashIcon,
+} from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import api from "../configs/api";
 import toast from "react-hot-toast";
+import { motion } from "motion/react";
 
 const MyGeneration = () => {
   const { isLoggedIn } = useAuth();
@@ -26,7 +33,6 @@ const MyGeneration = () => {
       const { data } = await api.get("/api/user/thumbnails");
       setThumbnails(data.thumbnails || []);
     } catch (error: any) {
-      console.error(error);
       toast.error(error?.response?.data?.message || error.message);
     } finally {
       setLoading(false);
@@ -40,92 +46,121 @@ const MyGeneration = () => {
     link.click();
     link.remove();
   };
+
   const handleDelete = async (id: string) => {
     try {
       const confirm = window.confirm(
-        "Are you sure ypu want to delete this thumbnail?",
+        "Are you sure you want to delete this thumbnail?"
       );
       if (!confirm) return;
-      const { data } = await api.delete(`/api/thumbnail/delete/${id}`);
+
+      const { data } = await api.delete(
+        `/api/thumbnail/delete/${id}`
+      );
+
       toast.success(data.message);
-      setThumbnails(thumbnails.filter((t) => t._id !== id));
+      setThumbnails((prev) => prev.filter((t) => t._id !== id));
     } catch (error: any) {
-      console.error(error);
       toast.error(error?.response?.data?.message || error.message);
     }
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
-      fetchThumbnails();
-    }
-  }, []);
+    if (isLoggedIn) fetchThumbnails();
+  }, [isLoggedIn]);
 
   return (
     <>
       <SoftBackDrop />
-      <div className="mt-32 min-h-screen px-6 md:px-15 lg-px-23 xl:px-32">
+
+      <div className="pt-28 min-h-screen text-gray-200 px-4 sm:px-6 lg:px-10">
+
         {/* HEADER */}
-        <div className="mb-9">
-          <h1 className="text-2xl font-bold text-zinc-200">My Generations</h1>
-          <p className="text-sm text-zinc-400 mt-1">
-            View and manage all your AI-generated thumbnails
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-10"
+        >
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+            My Generations
+          </h1>
+          <p className="text-sm text-gray-400 mt-2">
+            Manage all your AI-generated thumbnails
           </p>
-        </div>
+        </motion.div>
 
         {/* LOADING */}
         {loading && (
-          <div>
-            {Array.from({ length: 3 }).map((_, index) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
               <div
-                key={index}
-                className="rounded-2xl bg-white/8 border border-white/12 animate-pulse h-[260px]"
+                key={i}
+                className="h-[260px] rounded-2xl bg-white/5 border border-white/10 animate-pulse"
               />
             ))}
           </div>
         )}
 
-        {/* EMPTY STATE */}
+        {/* EMPTY */}
         {!loading && thumbnails.length === 0 && (
-          <div className="text-center py-24">
-            <h2 className="text-lg font-semibold text-zinc-200">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-28"
+          >
+            <h2 className="text-xl font-semibold text-white">
               No thumbnails yet
             </h2>
-            <p className="text-sm text-zinc-400 mt-2">
-              Generate your first thumbnail to see it here
+            <p className="text-gray-400 mt-2">
+              Start creating amazing thumbnails 🚀
             </p>
-          </div>
+          </motion.div>
         )}
 
         {/* GRID */}
         {!loading && thumbnails.length > 0 && (
-          <div className="columns-1 sm:columns-2 lg-columns-3 2xl-columns-4 gap-8">
-            {thumbnails.map((thumb: IThumbnail) => {
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {thumbnails.map((thumb, i) => {
               const aspectClass =
                 aspectRatioClassMap[thumb.aspect_ratio || "16:9"];
+
               return (
-                <div
+                <motion.div
                   key={thumb._id}
-                  onClick={() => navigate(`/generate/${thumb._id}`)}
-                  className="mb-8 group relative cursor-pointer rounded-2xl bg-white/8 border border-white/12 transition shadow-xl break-inside-avoid"
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  whileHover={{ y: -6 }}
+                  onClick={() =>
+                    navigate(`/generate/${thumb._id}`)
+                  }
+                  className="group cursor-pointer rounded-2xl overflow-hidden
+                  bg-white/5 backdrop-blur-xl border border-white/10
+                  shadow-xl hover:shadow-cyan-500/10 transition-all duration-300"
                 >
+                  {/* IMAGE */}
                   <div
-                    className={`relative overflow-hidden rounded-t-2xl ${aspectClass} bg-black/25`}
+                    className={`relative ${aspectClass} bg-black/30 overflow-hidden`}
                   >
                     {thumb.image_url ? (
                       <img
                         src={thumb.image_url}
                         alt={thumb.title}
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-sm text-zinc-400">
-                        {thumb.isGenerating ? "Generating..." : "No Image"}
+                      <div className="flex items-center justify-center h-full text-sm text-gray-400">
+                        {thumb.isGenerating
+                          ? "Generating..."
+                          : "No Image"}
                       </div>
                     )}
 
+                    {/* OVERLAY */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition" />
+
                     {thumb.isGenerating && (
-                      <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-sm font-medium text-indigo-200">
+                      <div className="absolute inset-0 bg-black/70 flex items-center justify-center text-sm text-cyan-300 font-medium">
                         Generating...
                       </div>
                     )}
@@ -133,48 +168,56 @@ const MyGeneration = () => {
 
                   {/* CONTENT */}
                   <div className="p-4 space-y-2">
-                    <h3 className="text-sm font-semibold text-zinc-100">
+                    <h3 className="text-sm font-semibold text-white line-clamp-2">
                       {thumb.title}
                     </h3>
-                    <div className="flex flex-warp gap-2 text-xs text-zinc-400">
-                      <span className="px-2 py-0.5 rounded bg-white/10">
+
+                    <div className="flex flex-wrap gap-2 text-xs">
+                      <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300">
                         {thumb.style}
                       </span>
-                      <span className="px-2 py-0.5 rounded bg-white/10">
+
+                      <span className="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300">
                         {thumb.color_scheme}
                       </span>
-                      <span className="px-2 py-0.5 rounded bg-white/10">
+
+                      <span className="px-2 py-0.5 rounded bg-white/10 text-gray-300">
                         {thumb.aspect_ratio}
                       </span>
                     </div>
-                    <p className="text-xs text-zinc-500">
-                      {new Date(thumb.createdAt!).toDateString()}
+
+                    <p className="text-xs text-gray-500">
+                      {new Date(
+                        thumb.createdAt!
+                      ).toDateString()}
                     </p>
                   </div>
 
                   {/* ACTIONS */}
                   <div
-                    className="absolute bottom-2 right-2 max-sm:flex sm:hidden group-hover:flex gap-1.5"
+                    className="absolute bottom-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <TrashIcon
                       onClick={() => handleDelete(thumb._id)}
-                      className="size-6 bg-black/40 p-1 rounded hover:bg-indigo-600 transition-all"
+                      className="size-7 p-1.5 rounded-lg bg-black/50 hover:bg-rose-600 transition"
                     />
 
                     <DownloadIcon
-                      onClick={() => handleDownload(thumb.image_url!)}
-                      className="size-6 bg-black/40 p-1 rounded hover:bg-cyan-600 transition-all"
+                      onClick={() =>
+                        handleDownload(thumb.image_url!)
+                      }
+                      className="size-7 p-1.5 rounded-lg bg-black/50 hover:bg-cyan-600 transition"
                     />
 
                     <Link
                       target="_blank"
                       to={`/preview?thumbnail_url=${thumb.image_url}&title=${thumb.title}`}
                     >
-                      <ArrowUpRightIcon className="size-6 bg-black/40 p-1 rounded hover:bg-violet-600 transition-all" />
+                      <ArrowUpRightIcon className="size-7 p-1.5 rounded-lg bg-black/50 hover:bg-violet-600 transition" />
                     </Link>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>

@@ -1,31 +1,46 @@
-import { colorSchemes } from "../assets/assets";
+import { motion } from "motion/react";
+import {
+  colorSchemes,
+  type ColorSchemeId,
+} from "../assets/assets";
 
 const ColorSchemeSelector = ({
   value,
   onChange,
 }: {
-  value: string;
-  onChange: (color: string) => void;
+  value: ColorSchemeId;
+  onChange: (color: ColorSchemeId) => void;
 }) => {
   return (
-    <div className="space-y-3">
-      <label className="block text-sm font-medium text-zinc-300">
+    <div className="space-y-4">
+      {/* LABEL */}
+      <label className="block text-sm font-medium text-gray-300">
         Color Scheme
       </label>
 
-      <div className="grid grid-cols-6 gap-3">
-        {colorSchemes.map((scheme) => (
-          <button
+      {/* GRID */}
+      <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
+        {colorSchemes.map((scheme, i) => (
+          <motion.button
             key={scheme.id}
+            type="button"
             onClick={() => onChange(scheme.id)}
-            className={`relative rounded-lg transition-all overflow-hidden ${
-              value === scheme.id
-                ? "ring-2 ring-indigo-500/80"
-                : "ring-1 ring-white/5 hover:ring-indigo-500/40"
-            }`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.05 }}
+            className={`relative rounded-xl overflow-hidden transition-all duration-300
+              ${
+                value === scheme.id
+                  ? "ring-2 ring-cyan-400 shadow-lg shadow-cyan-500/20"
+                  : "ring-1 ring-white/10 hover:ring-cyan-400/50"
+              }
+            `}
             title={scheme.name}
           >
-            <div className="flex h-10 rounded-lg overflow-hidden">
+            {/* COLOR STRIP */}
+            <div className="flex h-12 rounded-xl overflow-hidden">
               {scheme.colors.map((color, index) => (
                 <div
                   key={index}
@@ -34,13 +49,22 @@ const ColorSchemeSelector = ({
                 />
               ))}
             </div>
-          </button>
+
+            {/* ACTIVE INDICATOR */}
+            {value === scheme.id && (
+              <motion.div
+                layoutId="activeColor"
+                className="absolute inset-0 rounded-xl border-2 border-emerald-400"
+              />
+            )}
+          </motion.button>
         ))}
       </div>
 
-      <p className="text-xs text-zinc-400">
+      {/* SELECTED TEXT */}
+      <p className="text-xs text-gray-400">
         Selected:{" "}
-        <span className="text-indigo-400">
+        <span className="text-cyan-400 font-medium">
           {colorSchemes.find((s) => s.id === value)?.name}
         </span>
       </p>
